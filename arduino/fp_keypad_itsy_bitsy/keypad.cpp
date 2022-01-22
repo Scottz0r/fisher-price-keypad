@@ -1,10 +1,8 @@
 #include "keypad.h"
 
-#include <Keyboard.h>
 #include <avr/pgmspace.h>
 #include <Arduino.h>
 #include "hw_cfg.h"
-#include "color_manager.h"
 
 namespace scottz0r {
     
@@ -68,36 +66,39 @@ namespace scottz0r {
 
         // Set killswitch as input pulled up. If connected to ground, it will disable the keyboard.
         pinMode(killswitch_pin, INPUT_PULLUP);
-
-        Keyboard.begin();
     }
 
-    void Keypad::process()
+    char Keypad::process()
     {
         time_type now = millis();
         time_type elapsed = now - m_last_scan;
 
         if (elapsed < POLL_RATE)
         {
-            return;
+            return no_key;
         }
 
+        char result = no_key;
         int key = scan_pad();
 
         if (key >= 0 && key < keymap_size)
         {
-            handle_keydown(key);
+            result = handle_keydown(key);
         }
         else
         {
-            // No key pressed. Clear last key.
-            m_prev_key_code = NO_BUTTON;
+            if (m_prev_key_code != NO_BUTTON)
+            {
+                result = key_release;
+            }
 
-            // No key pressed, release all on the keyboard.
-            Keyboard.releaseAll();
+            // No key pressed. Clear last key.
+            m_prev_key_code = NO_BUTTON;            
         }
 
         m_last_scan = now;
+
+        return result;
     }
 
     // Scan the keypad for a pressed button. This will return after finding the first button pressed.
@@ -142,19 +143,19 @@ namespace scottz0r {
     }
 
     // Handle a key being pressed, sending the keystroke to the deviced plugged in via USB.
-    void Keypad::handle_keydown(int key_code)
+    char Keypad::handle_keydown(int key_code)
     {
         // Killswitch low = keyboard disabled.
         int is_killed = digitalRead(killswitch_pin);
         if (!is_killed)
         {
-            return;
+            return no_key;
         }
 
         // Do nothing if the same key is pressed.
         if (m_prev_key_code == key_code)
         {
-            return;
+            return no_key;
         }
 
         // Get ASCII character representation.
@@ -163,8 +164,6 @@ namespace scottz0r {
         // Save last key press to avoid double pressing. This also helps with debounce, too.
         m_prev_key_code = key_code;
 
-        Keyboard.press(c);
-
-        colorman::play(key_code);
+        return c;
     }
 }

@@ -7,6 +7,7 @@
 
 namespace scottz0r
 {
+    // TODO - a better name would be LED animator.
     class LedManager
     {
     public:

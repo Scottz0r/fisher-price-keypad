@@ -10,16 +10,20 @@ namespace scottz0r {
         static constexpr time_type POLL_RATE = 30; // Rate at which the keypad will be polled.
         static constexpr int NO_BUTTON = -1; // Represents when a button is not pressed.
     public:
+
+        static constexpr char key_release = -10;
+        static constexpr char no_key = -1;
+
         Keypad();
 
         void begin();
 
-        void process();
+        char process();
     
     private:
         int scan_pad();
 
-        void handle_keydown(int key_code);
+        char handle_keydown(int key_code);
 
         int m_prev_key_code = NO_BUTTON; // The last key pressed.
         time_type m_last_scan = 0; // Time keypad last scanned.

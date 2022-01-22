@@ -8,6 +8,8 @@ namespace scottz0r
 {
     #define color_count(tbl) ((sizeof(tbl) / sizeof(tbl[0])) / 3)
 
+    // TODO - a better name would be ColorTable
+
     // Wrapper around a table of colors. Colors are assumed to be stored in a single array, with 3 values per
     // color. The index shall be divisible by 3.
     class LookUpTable

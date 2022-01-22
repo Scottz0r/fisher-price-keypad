@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "hw_cfg.h"
 
 namespace scottz0r
 {

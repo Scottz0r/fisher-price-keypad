@@ -5,6 +5,15 @@
 
 namespace scottz0r
 {
+    void init_led()
+    {
+        pinMode(RED_LED, OUTPUT);
+        pinMode(GREEN_LED, OUTPUT);
+        pinMode(BLUE_LED, OUTPUT);
+
+        write_led(RGB{});
+    }
+
     void write_led(const RGB& rgb)
     {
         // Flip the color because this is common annode and using current sinks.

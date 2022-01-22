@@ -1,5 +1,6 @@
 #include "Arduino.h"
 
+#include "globals.h"
 #include "led_manager.h"
 
 namespace scottz0r
@@ -11,7 +12,6 @@ namespace scottz0r
 
     void LedManager::set(const LookUpTable& lut, unsigned long duration)
     {
-        // TODO: Probably a wrapper for the table.
         m_table = &lut;
 
         m_duration = duration / lut.size();

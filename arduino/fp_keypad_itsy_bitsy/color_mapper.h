@@ -1,12 +1,11 @@
 #ifndef _SCOTTZOR_COLOR_MANAGER_H_INCLUDE_GUARD
 #define _SCOTTZOR_COLOR_MANAGER_H_INCLUDE_GUARD
 
-namespace scottz0r { namespace colorman {
+#include "look_up_table.h"
 
-    void begin();
+namespace scottz0r {
 
-    void play(int key_code);
-
-}}
+    const LookUpTable* map_key_to_color(char key_char);
+}
 
 #endif // _SCOTTZOR_COLOR_MANAGER_H_INCLUDE_GUARD
